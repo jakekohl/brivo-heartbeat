@@ -1,0 +1,19 @@
+{
+  "name": "brivo-heartbeat",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "check": "node src/once.js",
+    "test:email": "node src/email-check.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "nodemailer": "^10.1.7"
+  }
+}
