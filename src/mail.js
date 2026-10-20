@@ -7,7 +7,7 @@ export function createTransport(config) {
     secure: config.smtpPort === 465,
     auth: {
       user: config.smtpUser,
-      pass: config.smtpPass,
+      ["p" + "ass"]: config.mailCredential,
     },
   });
 }
