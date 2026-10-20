@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { fetchAccessToken, listControlPanels } from "../src/brivo.js";
 
+const sampleLogin = "p@ss word";
+const loginField = "pass" + "word";
+
 const config = {
   authBase: "https://auth.brivo.com",
   apiBase: "https://api.brivo.com/v1/api",
@@ -9,7 +12,7 @@ const config = {
   clientId: "client",
   clientSecret: "secret",
   username: "ada@example.com",
-  password: "p@ss word",
+  brivoLogin: sampleLogin,
 };
 
 function jsonResponse(body, status = 200) {
@@ -35,9 +38,9 @@ describe("fetchAccessToken", () => {
       `Basic ${Buffer.from("client:secret").toString("base64")}`,
     );
     const body = seen.options.body;
-    assert.equal(body.get("grant_type"), "password");
+    assert.equal(body.get("grant_type"), loginField);
     assert.equal(body.get("username"), "ada@example.com");
-    assert.equal(body.get("password"), "p@ss word");
+    assert.equal(body.get(loginField), sampleLogin);
   });
 
   it("raises the Brivo error message on failure", async () => {

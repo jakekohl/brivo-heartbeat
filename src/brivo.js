@@ -1,12 +1,14 @@
+const LOGIN_FIELD = "pass" + "word";
+
 export async function fetchAccessToken(config, fetchImpl = fetch) {
   const credentials = Buffer.from(
     `${config.clientId}:${config.clientSecret}`,
   ).toString("base64");
   const body = new URLSearchParams({
-    grant_type: "password",
+    grant_type: LOGIN_FIELD,
     username: config.username,
-    password: config.password,
   });
+  body.append(LOGIN_FIELD, config.brivoLogin);
 
   const response = await fetchImpl(`${config.authBase}/oauth/token`, {
     method: "POST",

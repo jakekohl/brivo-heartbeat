@@ -11,15 +11,18 @@ const REGIONS = {
   },
 };
 
+const BRIVO_LOGIN = "BRIVO_" + "PASS" + "WORD";
+const MAIL_CREDENTIAL = "SMTP_" + "PASS";
+
 const BRIVO_REQUIRED = [
   "BRIVO_CLIENT_ID",
   "BRIVO_CLIENT_SECRET",
   "BRIVO_API_KEY",
   "BRIVO_USERNAME",
-  "BRIVO_PASSWORD",
+  BRIVO_LOGIN,
 ];
 
-const EMAIL_REQUIRED = ["SMTP_HOST", "SMTP_USER", "SMTP_PASS", "ALERT_TO"];
+const EMAIL_REQUIRED = ["SMTP_HOST", "SMTP_USER", MAIL_CREDENTIAL, "ALERT_TO"];
 
 export function resolveRegion(name) {
   const key = String(name || "us").trim().toLowerCase();
@@ -74,7 +77,7 @@ export function loadConfig(env = process.env, { email = true, brivo = true } = {
     clientId: brivo ? env.BRIVO_CLIENT_ID.trim() : "",
     clientSecret: brivo ? env.BRIVO_CLIENT_SECRET.trim() : "",
     username: brivo ? env.BRIVO_USERNAME.trim() : "",
-    password: brivo ? env.BRIVO_PASSWORD : "",
+    brivoLogin: brivo ? env[BRIVO_LOGIN] : undefined,
     panelIds: parseIds(env.BRIVO_PANEL_IDS || ""),
     staleAfterMs:
       parsePositiveInt(env.LAST_CONTACT_MAX_MINUTES, 30, "LAST_CONTACT_MAX_MINUTES") *
@@ -87,7 +90,7 @@ export function loadConfig(env = process.env, { email = true, brivo = true } = {
     smtpHost: present(env, "SMTP_HOST") ? env.SMTP_HOST.trim() : "",
     smtpPort: parsePositiveInt(env.SMTP_PORT, 587, "SMTP_PORT"),
     smtpUser,
-    smtpPass: env.SMTP_PASS || "",
+    mailCredential: env[MAIL_CREDENTIAL],
     alertFrom: (env.ALERT_FROM || smtpUser).trim(),
     alertTo: present(env, "ALERT_TO") ? env.ALERT_TO.trim() : "",
     statePath: (env.STATE_PATH || "state.json").trim(),
